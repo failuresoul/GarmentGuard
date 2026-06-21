@@ -1,7 +1,13 @@
 const oracledb = require('oracledb');
 
-// Enable oracledb 6 Thin mode explicitly
-oracledb.thin = true;
+// Enable node-oracledb Thick mode to support Oracle 11g connections
+try {
+  oracledb.initOracleClient();
+  console.log('Oracle Client initialized in Thick mode (compiles with local 11g client binaries).');
+} catch (err) {
+  console.error('Failed to initialize Oracle Client in Thick mode:', err.message);
+  console.error('Verify that your local Oracle XE bin folder or Oracle Instant Client is configured in the system PATH.');
+}
 
 async function initializePool() {
   const poolConfig = {
@@ -15,12 +21,13 @@ async function initializePool() {
 
   try {
     await oracledb.createPool(poolConfig);
-    console.log('Oracle Database Connection Pool initialized successfully (Thin mode).');
+    console.log('Oracle Database Connection Pool initialized successfully (Thick mode).');
   } catch (err) {
     console.error('Failed to initialize Oracle connection pool:', err.message);
     throw err;
   }
 }
+
 
 async function closePool() {
   try {

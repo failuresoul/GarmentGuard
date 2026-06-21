@@ -85,4 +85,35 @@ router.post(
   }
 );
 
+/**
+ * @route   GET /api/factories
+ * @desc    Get all factories with compliance details
+ * @access  Public
+ */
+router.get('/', async (req, res, next) => {
+  const sql = `
+    SELECT 
+      factory_id AS "factoryId",
+      factory_name AS "name",
+      registration_no AS "registrationNo",
+      address AS "address",
+      district AS "district",
+      total_workers AS "totalWorkers",
+      compliance_status AS "complianceStatus",
+      compliance_score AS "complianceScore",
+      latest_audit_score AS "latestAuditScore",
+      active_certs_count AS "activeCertsCount",
+      open_grievances_count AS "openGrievancesCount"
+    FROM vw_factory_compliance
+    ORDER BY factory_name
+  `;
+  try {
+    const result = await executeQuery(sql);
+    res.json(result.rows || []);
+  } catch (err) {
+    next(err);
+  }
+});
+
 module.exports = router;
+

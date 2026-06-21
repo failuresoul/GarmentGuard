@@ -1,5 +1,6 @@
 require('dotenv').config();
 const express = require('express');
+const cors = require('cors');
 const { initializePool, closePool } = require('./db/pool');
 const factoryRoutes = require('./routes/factories');
 const workerRoutes = require('./routes/workers');
@@ -10,8 +11,12 @@ const errorHandler = require('./middleware/errorHandler');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Enable CORS for frontend integration
+app.use(cors());
+
 // Body Parsers
 app.use(express.json());
+
 
 // API Routes
 app.use('/api/factories', factoryRoutes);

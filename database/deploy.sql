@@ -2,11 +2,13 @@
 -- Platform: Oracle Database XE 11g
 -- Runs all sub-scripts in order
 
+SET DEFINE OFF
 SET ECHO ON
 SET FEEDBACK ON
 SET SERVEROUTPUT ON
 
 PROMPT Starting GarmentGuard Database Setup...
+
 
 @01_cleanup.sql
 @02_sequences.sql

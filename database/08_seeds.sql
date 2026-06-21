@@ -1,5 +1,7 @@
+SET DEFINE OFF
 -- 9. SEED DATA INSERTION
 PROMPT Inserting seed data...
+
 
 -- FACTORIES (10 rows, all 8 divisions)
 INSERT INTO FACTORY (factory_id, factory_name, registration_no, address, district, total_workers, compliance_status, compliance_score, last_audit_date, next_audit_date, contact_person, phone, email)
@@ -121,7 +123,7 @@ VALUES (30, 10, 'Asaduzzaman', 'NID-10030', 'Cutting Master', TO_DATE('2020-04-1
 
 -- BUYERS (5 rows)
 INSERT INTO BUYER (buyer_id, buyer_name, country, contact_name, email, phone, brand_name)
-VALUES (1, 'H&M', 'Sweden', 'Sven Larsson', 'sourcing@hm.com', '+4687965500', 'H&M');
+VALUES (1, 'H' || CHR(38) || 'M', 'Sweden', 'Sven Larsson', 'sourcing@hm.com', '+4687965500', 'H' || CHR(38) || 'M');
 
 INSERT INTO BUYER (buyer_id, buyer_name, country, contact_name, email, phone, brand_name)
 VALUES (2, 'Walmart', 'USA', 'John Smith', 'supplier@walmart.com', '+14792734000', 'Walmart');
