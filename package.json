@@ -1,0 +1,16 @@
+{
+  "name": "garmentguard-backend",
+  "version": "1.0.0",
+  "description": "Node.js Express backend for GarmentGuard",
+  "main": "src/app.js",
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "node --watch src/app.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "express-validator": "^7.1.0",
+    "oracledb": "^6.5.0"
+  }
+}
