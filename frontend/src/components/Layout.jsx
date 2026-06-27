@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Outlet, NavLink } from 'react-router-dom';
+import { Outlet, NavLink, useLocation } from 'react-router-dom';
 import { Factory, Users, ClipboardCheck, AlertTriangle, ShieldCheck, X } from 'lucide-react';
 
 /**
@@ -7,6 +7,7 @@ import { Factory, Users, ClipboardCheck, AlertTriangle, ShieldCheck, X } from 'l
  * Contains the main sidebar layout, navigation links, and a listener to display error toasts.
  */
 export function Layout() {
+  const location = useLocation();
   const [toast, setToast] = useState(null);
 
   useEffect(() => {
@@ -45,22 +46,26 @@ export function Layout() {
 
         {/* Navigation list */}
         <nav className="flex-1 px-4 py-6 space-y-1">
-          {navItems.map((item) => (
-            <NavLink
-              key={item.name}
-              to={item.to}
-              className={({ isActive }) =>
-                `flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+          {navItems.map((item) => {
+            // Keep 'Factories' active on /factories/:id child routes too
+            const isActive = item.to === '/'
+              ? location.pathname === '/' || location.pathname.startsWith('/factories')
+              : location.pathname.startsWith(item.to);
+            return (
+              <NavLink
+                key={item.name}
+                to={item.to}
+                className={`flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-colors ${
                   isActive
                     ? 'bg-emerald-600 text-white shadow-md'
                     : 'text-slate-400 hover:bg-slate-800 hover:text-white'
-                }`
-              }
-            >
-              <item.icon className="w-5 h-5 shrink-0" />
-              <span>{item.name}</span>
-            </NavLink>
-          ))}
+                }`}
+              >
+                <item.icon className="w-5 h-5 shrink-0" />
+                <span>{item.name}</span>
+              </NavLink>
+            );
+          })}
         </nav>
 
         {/* Footer */}

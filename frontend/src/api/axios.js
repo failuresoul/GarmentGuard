@@ -36,8 +36,12 @@ api.interceptors.response.use(
       errorMessage = error.message;
     }
 
-    // Dispatch a global event so the UI can catch it and display a toast
-    if (typeof window !== 'undefined') {
+    // Suppress global toast for React Query background fetches.
+    // Callers set { suppressToast: true } in the request config when they
+    // handle errors themselves via useQuery's isError flag.
+    const suppress = error.config?.suppressToast === true;
+
+    if (!suppress && typeof window !== 'undefined') {
       window.dispatchEvent(new CustomEvent('app-toast', {
         detail: { type: 'error', message: errorMessage }
       }));

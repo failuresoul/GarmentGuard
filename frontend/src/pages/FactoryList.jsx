@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useFactories } from '../hooks/useFactories';
 import { ComplianceBadge } from '../components/ComplianceBadge';
 import api from '../api/axios';
@@ -10,6 +11,7 @@ import { Plus, RotateCw, X, AlertCircle, Users, Mail, Phone, MapPin, Building, C
  * Includes a slide-over panel to register new factories.
  */
 export function FactoryList() {
+  const navigate = useNavigate();
   const { factories, loading, error, fetchFactories } = useFactories();
   const [isSlideOverOpen, setIsSlideOverOpen] = useState(false);
   
@@ -270,7 +272,10 @@ export function FactoryList() {
                         {factory.totalWorkers.toLocaleString()}
                       </td>
                       <td className="px-6 py-4">
-                        <button className="text-xs font-bold text-emerald-600 hover:text-emerald-700 inline-flex items-center gap-0.5 hover:underline">
+                        <button
+                          onClick={() => navigate(`/factories/${factory.factoryId}`)}
+                          className="text-xs font-bold text-emerald-600 hover:text-emerald-700 inline-flex items-center gap-0.5 hover:underline"
+                        >
                           View details
                           <ArrowRight className="w-3.5 h-3.5" />
                         </button>
