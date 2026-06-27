@@ -5,34 +5,34 @@ PROMPT Inserting seed data...
 
 -- FACTORIES (10 rows, all 8 divisions)
 INSERT INTO FACTORY (factory_id, factory_name, registration_no, address, district, total_workers, compliance_status, compliance_score, last_audit_date, next_audit_date, contact_person, phone, email)
-VALUES (1, 'Dhaka Garments Ltd.', 'REG-DHA-001', 'Ashulia, Savar', 'Dhaka', 3, 'Compliant', 92.5, TO_DATE('2026-03-15', 'YYYY-MM-DD'), TO_DATE('2027-03-15', 'YYYY-MM-DD'), 'M. A. Rahman', '01711111111', 'info@dhakagarments.com');
+VALUES (1, 'Dhaka Garments Ltd.', 'REG-DHA-001', 'Ashulia, Savar', 'Dhaka', 0, 'Compliant', 92.5, TO_DATE('2026-03-15', 'YYYY-MM-DD'), TO_DATE('2027-03-15', 'YYYY-MM-DD'), 'M. A. Rahman', '01711111111', 'info@dhakagarments.com');
 
 INSERT INTO FACTORY (factory_id, factory_name, registration_no, address, district, total_workers, compliance_status, compliance_score, last_audit_date, next_audit_date, contact_person, phone, email)
-VALUES (2, 'Mirpur Fashion Apparels', 'REG-DHA-002', 'Mirpur-10', 'Dhaka', 3, 'Partially Compliant', 76.0, TO_DATE('2026-04-10', 'YYYY-MM-DD'), TO_DATE('2027-04-10', 'YYYY-MM-DD'), 'Kamil Ahmed', '01711111112', 'info@mirpurfashion.com');
+VALUES (2, 'Mirpur Fashion Apparels', 'REG-DHA-002', 'Mirpur-10', 'Dhaka', 0, 'Partially Compliant', 76.0, TO_DATE('2026-04-10', 'YYYY-MM-DD'), TO_DATE('2027-04-10', 'YYYY-MM-DD'), 'Kamil Ahmed', '01711111112', 'info@mirpurfashion.com');
 
 INSERT INTO FACTORY (factory_id, factory_name, registration_no, address, district, total_workers, compliance_status, compliance_score, last_audit_date, next_audit_date, contact_person, phone, email)
-VALUES (3, 'Tongi Tex Group', 'REG-GAZ-001', 'Tongi Industrial Area', 'Gazipur', 3, 'Non-Compliant', 45.0, TO_DATE('2026-01-20', 'YYYY-MM-DD'), TO_DATE('2026-07-20', 'YYYY-MM-DD'), 'Shafiqul Alam', '01711111113', 'contact@tongitex.com');
+VALUES (3, 'Tongi Tex Group', 'REG-GAZ-001', 'Tongi Industrial Area', 'Gazipur', 0, 'Non-Compliant', 45.0, TO_DATE('2026-01-20', 'YYYY-MM-DD'), TO_DATE('2026-07-20', 'YYYY-MM-DD'), 'Shafiqul Alam', '01711111113', 'contact@tongitex.com');
 
 INSERT INTO FACTORY (factory_id, factory_name, registration_no, address, district, total_workers, compliance_status, compliance_score, last_audit_date, next_audit_date, contact_person, phone, email)
-VALUES (4, 'Kaliakair Eco-Styles', 'REG-GAZ-002', 'Kaliakair', 'Gazipur', 3, 'Compliant', 88.0, TO_DATE('2026-05-12', 'YYYY-MM-DD'), TO_DATE('2027-05-12', 'YYYY-MM-DD'), 'Farhana Chowdhury', '01711111114', 'eco@kaliakaireco.com');
+VALUES (4, 'Kaliakair Eco-Styles', 'REG-GAZ-002', 'Kaliakair', 'Gazipur', 0, 'Compliant', 88.0, TO_DATE('2026-05-12', 'YYYY-MM-DD'), TO_DATE('2027-05-12', 'YYYY-MM-DD'), 'Farhana Chowdhury', '01711111114', 'eco@kaliakaireco.com');
 
 INSERT INTO FACTORY (factory_id, factory_name, registration_no, address, district, total_workers, compliance_status, compliance_score, last_audit_date, next_audit_date, contact_person, phone, email)
-VALUES (5, 'Bayview Apparels Ltd.', 'REG-CTG-001', 'CEPZ, Halishahar', 'Chittagong', 3, 'Compliant', 95.0, TO_DATE('2026-02-18', 'YYYY-MM-DD'), TO_DATE('2027-02-18', 'YYYY-MM-DD'), 'Zahirul Islam', '01711111115', 'info@bayviewctg.com');
+VALUES (5, 'Bayview Apparels Ltd.', 'REG-CTG-001', 'CEPZ, Halishahar', 'Chittagong', 0, 'Compliant', 95.0, TO_DATE('2026-02-18', 'YYYY-MM-DD'), TO_DATE('2027-02-18', 'YYYY-MM-DD'), 'Zahirul Islam', '01711111115', 'info@bayviewctg.com');
 
 INSERT INTO FACTORY (factory_id, factory_name, registration_no, address, district, total_workers, compliance_status, compliance_score, last_audit_date, next_audit_date, contact_person, phone, email)
-VALUES (6, 'Sreemangal Quality Knits', 'REG-SYL-001', 'Sreemangal', 'Sylhet', 3, 'Pending', 60.0, TO_DATE('2026-06-01', 'YYYY-MM-DD'), TO_DATE('2026-12-01', 'YYYY-MM-DD'), 'Mohit Lal', '01711111116', 'knits@sreemangalquality.com');
+VALUES (6, 'Sreemangal Quality Knits', 'REG-SYL-001', 'Sreemangal', 'Sylhet', 0, 'Pending', 60.0, TO_DATE('2026-06-01', 'YYYY-MM-DD'), TO_DATE('2026-12-01', 'YYYY-MM-DD'), 'Mohit Lal', '01711111116', 'knits@sreemangalquality.com');
 
 INSERT INTO FACTORY (factory_id, factory_name, registration_no, address, district, total_workers, compliance_status, compliance_score, last_audit_date, next_audit_date, contact_person, phone, email)
-VALUES (7, 'Silk City Apparels', 'REG-RAJ-001', 'BSCIC Area', 'Rajshahi', 3, 'Suspended', 30.0, TO_DATE('2025-11-10', 'YYYY-MM-DD'), TO_DATE('2026-05-10', 'YYYY-MM-DD'), 'Aminul Islam', '01711111117', 'info@silkcityraj.com');
+VALUES (7, 'Silk City Apparels', 'REG-RAJ-001', 'BSCIC Area', 'Rajshahi', 0, 'Suspended', 30.0, TO_DATE('2025-11-10', 'YYYY-MM-DD'), TO_DATE('2026-05-10', 'YYYY-MM-DD'), 'Aminul Islam', '01711111117', 'info@silkcityraj.com');
 
 INSERT INTO FACTORY (factory_id, factory_name, registration_no, address, district, total_workers, compliance_status, compliance_score, last_audit_date, next_audit_date, contact_person, phone, email)
-VALUES (8, 'Rupsha Fashion Tech', 'REG-KHU-001', 'Khalishpur', 'Khulna', 3, 'Partially Compliant', 72.0, TO_DATE('2026-03-05', 'YYYY-MM-DD'), TO_DATE('2026-09-05', 'YYYY-MM-DD'), 'Saiful Bari', '01711111118', 'tech@rupshafashion.com');
+VALUES (8, 'Rupsha Fashion Tech', 'REG-KHU-001', 'Khalishpur', 'Khulna', 0, 'Partially Compliant', 72.0, TO_DATE('2026-03-05', 'YYYY-MM-DD'), TO_DATE('2026-09-05', 'YYYY-MM-DD'), 'Saiful Bari', '01711111118', 'tech@rupshafashion.com');
 
 INSERT INTO FACTORY (factory_id, factory_name, registration_no, address, district, total_workers, compliance_status, compliance_score, last_audit_date, next_audit_date, contact_person, phone, email)
-VALUES (9, 'Kirtankhola Fabrics', 'REG-BAR-001', 'Barishal City', 'Barishal', 3, 'Non-Compliant', 52.0, TO_DATE('2026-02-28', 'YYYY-MM-DD'), TO_DATE('2026-08-28', 'YYYY-MM-DD'), 'Anisur Rahman', '01711111119', 'ops@kirtankholafab.com');
+VALUES (9, 'Kirtankhola Fabrics', 'REG-BAR-001', 'Barishal City', 'Barishal', 0, 'Non-Compliant', 52.0, TO_DATE('2026-02-28', 'YYYY-MM-DD'), TO_DATE('2026-08-28', 'YYYY-MM-DD'), 'Anisur Rahman', '01711111119', 'ops@kirtankholafab.com');
 
 INSERT INTO FACTORY (factory_id, factory_name, registration_no, address, district, total_workers, compliance_status, compliance_score, last_audit_date, next_audit_date, contact_person, phone, email)
-VALUES (10, 'Brahmaputra Garment Zone', 'REG-MYM-001', 'Mymensingh Sadar', 'Mymensingh', 3, 'Compliant', 85.0, TO_DATE('2026-05-25', 'YYYY-MM-DD'), TO_DATE('2027-05-25', 'YYYY-MM-DD'), 'Faruk Ahmed', '01711111120', 'admin@brahmaputragz.com');
+VALUES (10, 'Brahmaputra Garment Zone', 'REG-MYM-001', 'Mymensingh Sadar', 'Mymensingh', 0, 'Compliant', 85.0, TO_DATE('2026-05-25', 'YYYY-MM-DD'), TO_DATE('2027-05-25', 'YYYY-MM-DD'), 'Faruk Ahmed', '01711111120', 'admin@brahmaputragz.com');
 
 -- USERS (5 rows)
 INSERT INTO USER_ (user_id, username, password_hash, role, full_name, factory_id, email, status)

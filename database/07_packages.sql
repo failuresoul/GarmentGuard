@@ -52,17 +52,21 @@ CREATE OR REPLACE PACKAGE BODY pkg_error_handler AS
 
   -- ── Private: create ERROR_LOG if it does not already exist ──────────────
   PROCEDURE ensure_error_log_table IS
+    v_count NUMBER;
   BEGIN
-    EXECUTE IMMEDIATE '
-      CREATE TABLE ERROR_LOG (
-        log_id          NUMBER(10)     CONSTRAINT pk_error_log PRIMARY KEY,
-        log_timestamp   TIMESTAMP      DEFAULT CURRENT_TIMESTAMP NOT NULL,
-        username        VARCHAR2(100)  NOT NULL,
-        procedure_name  VARCHAR2(150)  NOT NULL,
-        error_code      NUMBER(10)     NOT NULL,
-        error_message   VARCHAR2(4000) NOT NULL,
-        error_backtrace VARCHAR2(4000)
-      )';
+    SELECT COUNT(*) INTO v_count FROM user_tables WHERE table_name = 'ERROR_LOG';
+    IF v_count = 0 THEN
+      EXECUTE IMMEDIATE '
+        CREATE TABLE ERROR_LOG (
+          log_id          NUMBER(10)     CONSTRAINT pk_error_log PRIMARY KEY,
+          log_timestamp   TIMESTAMP      DEFAULT CURRENT_TIMESTAMP NOT NULL,
+          username        VARCHAR2(100)  NOT NULL,
+          procedure_name  VARCHAR2(150)  NOT NULL,
+          error_code      NUMBER(10)     NOT NULL,
+          error_message   VARCHAR2(4000) NOT NULL,
+          error_backtrace VARCHAR2(4000)
+        )';
+    END IF;
   EXCEPTION
     WHEN OTHERS THEN
       -- ORA-00955: name already used by an existing object — safe to ignore
@@ -581,12 +585,21 @@ CREATE OR REPLACE PACKAGE BODY pkg_worker_mgmt AS
     v_base_salary NUMBER(10,2);
     v_ot_paid     NUMBER(10,2);
     v_net_salary  NUMBER(10,2);
+    v_count       NUMBER;
   BEGIN
-    -- Single validation call (cap check + duplicate month check)
-    IF NOT fn_is_overtime_valid(p_worker_id, p_month, p_year, p_overtime_hours) THEN
-      RAISE_APPLICATION_ERROR(-20002,
-        'Overtime validation failed: exceeds ' || pkg_reporting.c_ot_cap
-        || '-hour cap or salary already processed for this month.');
+    -- Separate checks for OT cap (-20002) and duplicate month (-20003)
+    IF p_overtime_hours > pkg_reporting.c_ot_cap THEN
+      RAISE_APPLICATION_ERROR(-20002, 'Overtime hours exceed the statutory limit of ' || pkg_reporting.c_ot_cap || ' hours.');
+    END IF;
+
+    SELECT COUNT(*) INTO v_count
+    FROM   SALARY_RECORD
+    WHERE  worker_id = p_worker_id
+      AND  month     = p_month
+      AND  year      = p_year;
+
+    IF v_count > 0 THEN
+      RAISE_APPLICATION_ERROR(-20003, 'Salary already processed for this worker for month ' || p_month || '/' || p_year || '.');
     END IF;
 
     BEGIN

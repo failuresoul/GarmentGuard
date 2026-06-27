@@ -9,7 +9,7 @@ CREATE TABLE FACTORY (
   address VARCHAR2(500) NOT NULL,
   district VARCHAR2(100) NOT NULL,
   total_workers NUMBER(6) DEFAULT 0 NOT NULL CONSTRAINT chk_factory_workers CHECK (total_workers >= 0),
-  compliance_status VARCHAR2(50) NOT NULL CONSTRAINT chk_factory_compliance CHECK (compliance_status IN ('Compliant', 'Non-Compliant', 'Partially Compliant', 'Pending', 'Suspended')),
+  compliance_status VARCHAR2(50) NOT NULL CONSTRAINT chk_factory_compliance CHECK (compliance_status IN ('Compliant', 'Non-Compliant', 'Partially Compliant', 'Pending', 'Suspended', 'Review Needed')),
   compliance_score FLOAT CONSTRAINT chk_factory_score CHECK (compliance_score BETWEEN 0 AND 100),
   last_audit_date DATE,
   next_audit_date DATE,

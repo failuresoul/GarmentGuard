@@ -5,6 +5,8 @@ const { initializePool, closePool } = require('./db/pool');
 const factoryRoutes = require('./routes/factories');
 const workerRoutes = require('./routes/workers');
 const auditRoutes = require('./routes/audits');
+const reportRoutes = require('./routes/reports');
+const grievanceRoutes = require('./routes/grievances');
 const oracleErrors = require('./middleware/oracleErrors');
 const errorHandler = require('./middleware/errorHandler');
 
@@ -22,6 +24,8 @@ app.use(express.json());
 app.use('/api/factories', factoryRoutes);
 app.use('/api/workers', workerRoutes);
 app.use('/api/audits', auditRoutes);
+app.use('/api/reports', reportRoutes);
+app.use('/api/grievances', grievanceRoutes);
 
 // Error Handling Middlewares (Order of registration matters)
 app.use(oracleErrors); // First translates Oracle Database specific errors

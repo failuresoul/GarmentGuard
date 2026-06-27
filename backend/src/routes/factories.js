@@ -362,4 +362,53 @@ router.get('/:id/equipment-alerts', async (req, res, next) => {
   }
 });
 
+/**
+ * @route   GET /api/factories/:id/grievances
+ * @desc    Get grievances of a factory, filtered optionally by status
+ * @access  Public
+ */
+router.get('/:id/grievances', async (req, res, next) => {
+  const factoryId = parseInt(req.params.id, 10);
+  if (isNaN(factoryId)) return res.status(400).json({ error: 'Invalid factory ID' });
+
+  const status = req.query.status ? String(req.query.status).trim() : '';
+
+  let connection;
+  try {
+    connection = await oracledb.getConnection();
+    const binds = { fid: factoryId };
+    let sql = `
+      SELECT 
+        g.grievance_id     AS "grievanceId",
+        g.worker_id        AS "workerId",
+        g.category         AS "category",
+        DBMS_LOB.SUBSTR(g.description, 4000, 1) AS "description",
+        g.submitted_date   AS "submittedDate",
+        g.status           AS "status",
+        g.resolved_date    AS "resolvedDate",
+        g.resolution_notes AS "resolutionNotes",
+        w.full_name        AS "workerName"
+      FROM GRIEVANCE g
+      JOIN WORKER w ON g.worker_id = w.worker_id
+      WHERE w.factory_id = :fid
+    `;
+
+    if (status) {
+      sql += ' AND g.status = :status';
+      binds.status = status;
+    }
+
+    sql += ' ORDER BY g.submitted_date DESC';
+
+    const result = await connection.execute(sql, binds, { outFormat: oracledb.OUT_FORMAT_OBJECT });
+    res.json(result.rows || []);
+  } catch (err) {
+    next(err);
+  } finally {
+    if (connection) {
+      try { await connection.close(); } catch {}
+    }
+  }
+});
+
 module.exports = router;
