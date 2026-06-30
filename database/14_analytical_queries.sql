@@ -65,13 +65,13 @@ FROM FACTORY f;
 -- 1. WINDOW RANK QUERY
 -- Rank factories by compliance_score within each district
 --------------------------------------------------------------------------------
--- SELECT 
+-- SELECT /*+ PARALLEL(a,4) */
 --   factory_id, 
 --   factory_name, 
 --   district, 
 --   compliance_score, 
 --   RANK() OVER (PARTITION BY district ORDER BY compliance_score DESC) AS compliance_rank
--- FROM FACTORY;
+-- FROM FACTORY a;
 
 --------------------------------------------------------------------------------
 -- 2. RUNNING TOTAL QUERY

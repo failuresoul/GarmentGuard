@@ -1,0 +1,645 @@
+{
+  "info": {
+    "_postman_id": "a415c33f-d83c-44c1-a067-609b775787e6",
+    "name": "GarmentGuard API",
+    "description": "Postman collection covering all backend REST API routes of GarmentGuard, including automated auth cookie token synchronization.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const cookieHeader = pm.response.headers.get('Set-Cookie');",
+                  "if (cookieHeader) {",
+                  "    const match = cookieHeader.match(/token=([^;]+)/);",
+                  "    if (match) {",
+                  "        pm.environment.set('authToken', match[1]);",
+                  "        console.log('Successfully captured and saved authToken:', match[1]);",
+                  "    }",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"sysadmin\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Me Status",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "me"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/logout",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "logout"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Dashboard",
+      "item": [
+        {
+          "name": "Get Summary Metrics",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/dashboard",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "dashboard"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Analytics",
+      "item": [
+        {
+          "name": "Audit Trends (12 Months)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/analytics/audit-trends",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "analytics",
+                "audit-trends"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Grievance Breakdown",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/analytics/grievance-breakdown",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "analytics",
+                "grievance-breakdown"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Salary Trends per Worker",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/analytics/salary-trends/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "analytics",
+                "salary-trends",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Factories",
+      "item": [
+        {
+          "name": "List All Factories",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/factories",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "factories"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Single Factory Details",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/factories/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "factories",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Register New Factory",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"factoryName\": \"Savanna Apparel Group\",\n  \"registrationNo\": \"REG-DHA-999\",\n  \"address\": \"Plot 24, DEPZ, Savar\",\n  \"district\": \"Dhaka\",\n  \"totalWorkers\": 120,\n  \"contactPerson\": \"M. Chowdhury\",\n  \"phone\": \"01811111999\",\n  \"email\": \"savanna@apparels.com\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/factories",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "factories"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Factory Details",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"factoryName\": \"Dhaka Garments Ltd.\",\n  \"address\": \"Ashulia, Savar (Extended Area)\",\n  \"phone\": \"01711111111\",\n  \"email\": \"info@dhakagarments.com\",\n  \"contactPerson\": \"M. A. Rahman\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/factories/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "factories",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Workers",
+      "item": [
+        {
+          "name": "List All Workers",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/workers",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "workers"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Hire New Worker",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"factoryId\": 1,\n  \"fullName\": \"Mohammad Sumon\",\n  \"nationalId\": \"NID-88888\",\n  \"designation\": \"Ironman\",\n  \"joinDate\": \"2026-06-01\",\n  \"baseSalary\": 11000,\n  \"shift\": \"Morning\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/workers",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "workers"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Process Monthly Salary",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"workerId\": 1,\n  \"month\": 6,\n  \"year\": 2026,\n  \"overtimeHours\": 15\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/workers/salary",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "workers",
+                "salary"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Audits",
+      "item": [
+        {
+          "name": "List Audits",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/audits",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "audits"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Record Audit Report",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"factoryId\": 1,\n  \"auditDate\": \"2026-06-30\",\n  \"score\": 95.0,\n  \"result\": \"Passed\",\n  \"findings\": \"Full compliance observed in fire drills.\",\n  \"recommendations\": \"Keep maintaining high safety standards.\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/audits",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "audits"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Reports",
+      "item": [
+        {
+          "name": "Generate Factory Report",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/reports/factory/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "reports",
+                "factory",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Grievances",
+      "item": [
+        {
+          "name": "List All Grievances",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/grievances",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "grievances"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Resolve Grievance",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"Resolved\",\n  \"resolutionNotes\": \"Conducted physical wire rewiring and fixed grounding issues.\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/grievances/3",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "grievances",
+                "3"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Buyer Workspace",
+      "item": [
+        {
+          "name": "Get Sourcing Factories",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/buyer/factories/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "buyer",
+                "factories",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Factory Certifications",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/buyer/factory/1/certifications",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "buyer",
+                "factory",
+                "1",
+                "certifications"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Worker Workspace",
+      "item": [
+        {
+          "name": "Get My Grievances",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/worker-portal/grievances",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "worker-portal",
+                "grievances"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Submit My Grievance",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"category\": \"Safety Dispute\",\n  \"description\": \"Fire safety mask missing at cutting station.\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/worker-portal/grievances",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "worker-portal",
+                "grievances"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get My Salaries Slips",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/worker-portal/salaries",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "worker-portal",
+                "salaries"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{authToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Pre-request script to verify authToken or default baseUrl"
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Post-request assertion validation"
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string"
+    },
+    {
+      "key": "authToken",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}

@@ -1,0 +1,247 @@
+-- 07. TRIGGERS SCHEMA DEFINITIONS
+SET DEFINE OFF
+SET SQLBLANKLINES ON
+
+PROMPT Creating key generation triggers...
+
+CREATE OR REPLACE TRIGGER FACTORY_BI
+BEFORE INSERT ON FACTORY
+FOR EACH ROW
+BEGIN
+  IF :NEW.factory_id IS NULL THEN
+    SELECT FACTORY_SEQ.NEXTVAL INTO :NEW.factory_id FROM DUAL;
+  END IF;
+END;
+/
+
+CREATE OR REPLACE TRIGGER BUYER_BI
+BEFORE INSERT ON BUYER
+FOR EACH ROW
+BEGIN
+  IF :NEW.buyer_id IS NULL THEN
+    SELECT BUYER_SEQ.NEXTVAL INTO :NEW.buyer_id FROM DUAL;
+  END IF;
+END;
+/
+
+CREATE OR REPLACE TRIGGER USER_BI
+BEFORE INSERT ON USER_
+FOR EACH ROW
+BEGIN
+  IF :NEW.user_id IS NULL THEN
+    SELECT USER_SEQ.NEXTVAL INTO :NEW.user_id FROM DUAL;
+  END IF;
+END;
+/
+
+CREATE OR REPLACE TRIGGER WORKER_BI
+BEFORE INSERT ON WORKER
+FOR EACH ROW
+BEGIN
+  IF :NEW.worker_id IS NULL THEN
+    SELECT WORKER_SEQ.NEXTVAL INTO :NEW.worker_id FROM DUAL;
+  END IF;
+END;
+/
+
+CREATE OR REPLACE TRIGGER AUDIT_BI
+BEFORE INSERT ON "AUDIT"
+FOR EACH ROW
+BEGIN
+  IF :NEW.audit_id IS NULL THEN
+    SELECT AUDIT_SEQ.NEXTVAL INTO :NEW.audit_id FROM DUAL;
+  END IF;
+END;
+/
+
+CREATE OR REPLACE TRIGGER CERTIFICATION_BI
+BEFORE INSERT ON CERTIFICATION
+FOR EACH ROW
+BEGIN
+  IF :NEW.cert_id IS NULL THEN
+    SELECT CERTIFICATION_SEQ.NEXTVAL INTO :NEW.cert_id FROM DUAL;
+  END IF;
+END;
+/
+
+CREATE OR REPLACE TRIGGER SAFETY_EQUIPMENT_BI
+BEFORE INSERT ON SAFETY_EQUIPMENT
+FOR EACH ROW
+BEGIN
+  IF :NEW.equipment_id IS NULL THEN
+    SELECT SAFETY_EQUIPMENT_SEQ.NEXTVAL INTO :NEW.equipment_id FROM DUAL;
+  END IF;
+END;
+/
+
+CREATE OR REPLACE TRIGGER GRIEVANCE_BI
+BEFORE INSERT ON GRIEVANCE
+FOR EACH ROW
+BEGIN
+  IF :NEW.grievance_id IS NULL THEN
+    SELECT GRIEVANCE_SEQ.NEXTVAL INTO :NEW.grievance_id FROM DUAL;
+  END IF;
+END;
+/
+
+CREATE OR REPLACE TRIGGER SALARY_RECORD_BI
+BEFORE INSERT ON SALARY_RECORD
+FOR EACH ROW
+BEGIN
+  IF :NEW.record_id IS NULL THEN
+    SELECT SALARY_RECORD_SEQ.NEXTVAL INTO :NEW.record_id FROM DUAL;
+  END IF;
+END;
+/
+
+CREATE OR REPLACE TRIGGER ERROR_LOG_BI
+BEFORE INSERT ON ERROR_LOG
+FOR EACH ROW
+BEGIN
+  IF :NEW.log_id IS NULL THEN
+    SELECT ERROR_LOG_SEQ.NEXTVAL INTO :NEW.log_id FROM DUAL;
+  END IF;
+END;
+/
+
+CREATE OR REPLACE TRIGGER GRIEVANCE_AUDIT_LOG_BI
+BEFORE INSERT ON GRIEVANCE_AUDIT_LOG
+FOR EACH ROW
+BEGIN
+  IF :NEW.log_id IS NULL THEN
+    SELECT GRIEVANCE_AUDIT_LOG_SEQ.NEXTVAL INTO :NEW.log_id FROM DUAL;
+  END IF;
+END;
+/
+
+PROMPT Creating business automation triggers...
+
+-- trg_audit_after_insert
+CREATE OR REPLACE TRIGGER trg_audit_after_insert
+AFTER INSERT ON "AUDIT"
+FOR EACH ROW
+DECLARE
+  PRAGMA AUTONOMOUS_TRANSACTION;
+BEGIN
+  UPDATE FACTORY
+  SET    last_audit_date = :NEW.audit_date,
+         next_audit_date = ADD_MONTHS(:NEW.audit_date, 6)
+  WHERE  factory_id = :NEW.factory_id;
+
+  pkg_factory_mgmt.sp_update_compliance_status(:NEW.factory_id);
+  COMMIT;
+EXCEPTION
+  WHEN OTHERS THEN
+    ROLLBACK;
+    pkg_error_handler.log_error(
+      'trg_audit_after_insert', SQLCODE, SQLERRM,
+      DBMS_UTILITY.FORMAT_ERROR_BACKTRACE
+    );
+END trg_audit_after_insert;
+/
+
+-- trg_audit_score_status
+CREATE OR REPLACE TRIGGER trg_audit_score_status
+AFTER UPDATE OF score ON "AUDIT"
+FOR EACH ROW
+WHEN (NEW.score IS NOT NULL)
+DECLARE
+  PRAGMA AUTONOMOUS_TRANSACTION;
+BEGIN
+  pkg_factory_mgmt.sp_update_compliance_status(:NEW.factory_id);
+  COMMIT;
+EXCEPTION
+  WHEN OTHERS THEN
+    ROLLBACK;
+    pkg_error_handler.log_error(
+      'trg_audit_score_status', SQLCODE, SQLERRM,
+      DBMS_UTILITY.FORMAT_ERROR_BACKTRACE
+    );
+END trg_audit_score_status;
+/
+
+-- trg_salary_net_calc
+CREATE OR REPLACE TRIGGER trg_salary_net_calc
+BEFORE INSERT OR UPDATE ON SALARY_RECORD
+FOR EACH ROW
+BEGIN
+  :NEW.net_salary := NVL(:NEW.base_amount,    0)
+                   + NVL(:NEW.overtime_paid,  0)
+                   - NVL(:NEW.deductions,     0);
+
+  IF :NEW.net_salary < 0 THEN
+    :NEW.net_salary := 0;
+  END IF;
+END trg_salary_net_calc;
+/
+
+-- trg_cert_expiry_guard
+CREATE OR REPLACE TRIGGER trg_cert_expiry_guard
+BEFORE INSERT ON CERTIFICATION
+FOR EACH ROW
+BEGIN
+  IF TRUNC(:NEW.expiry_date) < TRUNC(SYSDATE) THEN
+    RAISE_APPLICATION_ERROR(
+      -20004,
+      'CERTIFICATION rejected: expiry_date ('
+      || TO_CHAR(:NEW.expiry_date, 'YYYY-MM-DD')
+      || ') is in the past.'
+    );
+  END IF;
+END trg_cert_expiry_guard;
+/
+
+-- trg_worker_count_sync
+CREATE OR REPLACE TRIGGER trg_worker_count_sync
+AFTER INSERT OR DELETE ON WORKER
+FOR EACH ROW
+BEGIN
+  IF INSERTING THEN
+    UPDATE FACTORY
+    SET    total_workers = total_workers + 1
+    WHERE  factory_id = :NEW.factory_id;
+
+  ELSIF DELETING THEN
+    UPDATE FACTORY
+    SET    total_workers = GREATEST(total_workers - 1, 0)
+    WHERE  factory_id = :OLD.factory_id;
+  END IF;
+EXCEPTION
+  WHEN OTHERS THEN
+    pkg_error_handler.log_error(
+      'trg_worker_count_sync', SQLCODE, SQLERRM,
+      DBMS_UTILITY.FORMAT_ERROR_BACKTRACE
+    );
+    RAISE;
+END trg_worker_count_sync;
+/
+
+-- trg_grievance_audit_log
+CREATE OR REPLACE TRIGGER trg_grievance_audit_log
+AFTER UPDATE ON GRIEVANCE
+FOR EACH ROW
+WHEN (NVL(NEW.status, 'X') != NVL(OLD.status, 'X'))
+DECLARE
+  PRAGMA AUTONOMOUS_TRANSACTION;
+BEGIN
+  INSERT INTO GRIEVANCE_AUDIT_LOG (
+    grievance_id,
+    old_status,
+    new_status,
+    changed_by
+  ) VALUES (
+    :NEW.grievance_id,
+    :OLD.status,
+    :NEW.status,
+    COALESCE(SYS_CONTEXT('USERENV', 'CLIENT_INFO'), SYS_CONTEXT('USERENV', 'SESSION_USER'))
+  );
+  COMMIT;
+EXCEPTION
+  WHEN OTHERS THEN
+    ROLLBACK;
+    pkg_error_handler.log_error(
+      'trg_grievance_audit_log', SQLCODE, SQLERRM,
+      DBMS_UTILITY.FORMAT_ERROR_BACKTRACE
+    );
+END trg_grievance_audit_log;
+/

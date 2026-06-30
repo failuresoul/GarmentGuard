@@ -28,7 +28,29 @@ async function executeQuery(sql, params = {}, opts = {}) {
       ...opts
     };
 
+    const start = Date.now();
     const result = await connection.execute(sql, params, executionOptions);
+    const duration = Date.now() - start;
+
+    // Log slow queries (>500ms) to the ERROR_LOG table
+    if (duration > 500) {
+      try {
+        const slowMsg = `Slow query detected (${duration}ms): ${sql.substring(0, 1500)}`;
+        await connection.execute(
+          `INSERT INTO ERROR_LOG (username, procedure_name, error_code, error_message, error_backtrace)
+           VALUES (:username, :proc, :code, :msg, :backtrace)`,
+          {
+            username: 'SYSTEM_DB_POOL',
+            proc: 'NodeJS executeQuery timing',
+            code: 500,
+            msg: slowMsg,
+            backtrace: new Error().stack ? new Error().stack.substring(0, 2000) : null
+          }
+        );
+      } catch (logErr) {
+        console.error('Failed to log slow query to ERROR_LOG:', logErr.message);
+      }
+    }
 
     return {
       rows: result.rows || null,

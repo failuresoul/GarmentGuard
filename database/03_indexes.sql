@@ -1,4 +1,6 @@
--- 6. INDEX CREATION
+-- 03. INDEXES SCHEMA DEFINITIONS
+SET DEFINE OFF
+
 PROMPT Creating indexes...
 
 -- Indexes on Foreign Key Columns
@@ -13,7 +15,7 @@ CREATE INDEX idx_user_factory_id ON USER_(factory_id);
 CREATE INDEX idx_bf_buyer_id ON BUYER_FACTORY(buyer_id);
 CREATE INDEX idx_bf_factory_id ON BUYER_FACTORY(factory_id);
 
--- Composite Indexes
+-- Composite Performance Indexes
 CREATE INDEX idx_audit_factory_date ON "AUDIT"(factory_id, audit_date DESC);
 CREATE INDEX idx_salary_worker_year_month ON SALARY_RECORD(worker_id, year, month);
 
