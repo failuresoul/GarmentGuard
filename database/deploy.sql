@@ -22,6 +22,9 @@ PROMPT Starting GarmentGuard Database Setup...
 @10_tests.sql
 @11_verifications.sql
 @12_production_processing.sql
+@14_analytical_queries.sql
+@15_rbac_schema.sql
+@16_seeds_rbac.sql
 
 PROMPT Database deployment and test script execution complete.
 EXIT;

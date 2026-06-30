@@ -717,7 +717,7 @@ export function FactoryDetail() {
   if (factory.isLoading) {
     return (
       <div className="space-y-5">
-        <Link to="/" className="inline-flex items-center gap-1.5 text-sm text-gray-400">
+        <Link to="/factories" className="inline-flex items-center gap-1.5 text-sm text-gray-400">
           <ArrowLeft className="w-4 h-4"/> All Factories
         </Link>
         <div className="bg-gradient-to-br from-slate-900 to-slate-700 rounded-2xl p-8 animate-pulse">
@@ -741,7 +741,7 @@ export function FactoryDetail() {
         <Building2 className="w-12 h-12 text-gray-200 mx-auto mb-4"/>
         <h2 className="text-lg font-bold text-gray-700 mb-1">Factory Not Found</h2>
         <p className="text-sm text-gray-400 mb-6">No factory exists with ID {id}.</p>
-        <Link to="/" className="inline-flex items-center gap-2 text-sm font-semibold text-emerald-600 hover:underline">
+        <Link to="/factories" className="inline-flex items-center gap-2 text-sm font-semibold text-emerald-600 hover:underline">
           <ArrowLeft className="w-4 h-4"/> Back to Factories
         </Link>
       </div>
@@ -753,7 +753,7 @@ export function FactoryDetail() {
   return (
     <div className="space-y-5">
       {/* Back link */}
-      <Link to="/"
+      <Link to="/factories"
         className="inline-flex items-center gap-1.5 text-sm font-medium text-gray-400 hover:text-emerald-600 transition-colors">
         <ArrowLeft className="w-4 h-4"/> All Factories
       </Link>

@@ -6,6 +6,13 @@ import FactoryDetail from './pages/FactoryDetail';
 import GrievanceBoard from './pages/GrievanceBoard';
 import WorkerForm from './pages/WorkerForm';
 import SalaryProcessor from './pages/SalaryProcessor';
+import Dashboard from './pages/Dashboard';
+import Analytics from './pages/Analytics';
+import LoginPage from './pages/LoginPage';
+import BuyerDashboard from './pages/BuyerDashboard';
+import WorkerPortal from './pages/WorkerPortal';
+import ProtectedRoute from './components/ProtectedRoute';
+import { AuthProvider } from './hooks/useAuth';
 
 /**
  * Tabbed dashboard wrapper for Worker Personnel registry and Payroll operations.
@@ -20,7 +27,7 @@ function WorkersDashboard() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-fadeIn">
       {/* Tab bar header */}
       <div className="flex gap-2 border-b border-gray-200">
         <button
@@ -61,42 +68,57 @@ function WorkersDashboard() {
  */
 export function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          {/* Default dashboard home displays factories */}
-          <Route index element={<FactoryList />} />
-          
-          {/* Details screen */}
-          <Route path="factories/:id" element={<FactoryDetail />} />
-          
-          {/* Workers tab wrapper */}
-          <Route path="workers" element={<WorkersDashboard />} />
-          
-          {/* Audits coming soon skeleton */}
-          <Route 
-            path="audits" 
-            element={
-              <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
-                <h2 className="text-xl font-bold text-gray-900">Safety Audits Management</h2>
-                <p className="text-gray-500 text-sm mt-1">
-                  Schedule and record safety reviews, fire safety equipment, and structural tests.
-                </p>
-                <div className="mt-6 border-2 border-dashed border-gray-200 rounded-xl h-64 flex items-center justify-center text-gray-400 text-sm font-medium">
-                  Audits Registry and Assessment System Coming Soon
-                </div>
-              </div>
-            } 
-          />
+    <AuthProvider>
+      <BrowserRouter>
+        <Routes>
+          {/* Public login page */}
+          <Route path="login" element={<LoginPage />} />
 
-          {/* Grievance Kanban Board */}
-          <Route path="grievances" element={<GrievanceBoard />} />
+          {/* Protected buyer dashboard */}
+          <Route element={<ProtectedRoute allowedRoles={['Buyer', 'Buyer_Representative', 'Admin']} />}>
+            <Route path="buyer" element={<BuyerDashboard />} />
+          </Route>
 
-          {/* Catch-all redirect to factories list */}
+          {/* Protected worker portal */}
+          <Route element={<ProtectedRoute allowedRoles={['Worker', 'Admin']} />}>
+            <Route path="worker-portal" element={<WorkerPortal />} />
+          </Route>
+
+          {/* Protected main workspace (Compliance officers, Inspectors, Admins) */}
+          <Route element={<ProtectedRoute allowedRoles={['Admin', 'Inspector', 'Compliance_Officer', 'Factory_Manager']} />}>
+            <Route path="/" element={<Layout />}>
+              <Route index element={<Dashboard />} />
+              <Route path="factories" element={<FactoryList />} />
+              <Route path="factories/:id" element={<FactoryDetail />} />
+              <Route path="analytics" element={<Analytics />} />
+              <Route path="workers" element={<WorkersDashboard />} />
+              
+              {/* Audits coming soon skeleton */}
+              <Route 
+                path="audits" 
+                element={
+                  <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm animate-fadeIn">
+                    <h2 className="text-xl font-bold text-gray-900">Safety Audits Management</h2>
+                    <p className="text-gray-500 text-sm mt-1">
+                      Schedule and record safety reviews, fire safety equipment, and structural tests.
+                    </p>
+                    <div className="mt-6 border-2 border-dashed border-gray-200 rounded-xl h-64 flex items-center justify-center text-gray-400 text-sm font-medium">
+                      Audits Registry and Assessment System Coming Soon
+                    </div>
+                  </div>
+                } 
+              />
+
+              {/* Grievance Kanban Board */}
+              <Route path="grievances" element={<GrievanceBoard />} />
+            </Route>
+          </Route>
+
+          {/* Catch-all redirect to index home */}
           <Route path="*" element={<Navigate to="/" replace />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
   );
 }
 

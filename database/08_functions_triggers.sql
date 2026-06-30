@@ -1,19 +1,3 @@
--- =============================================================================
--- 08. TRIGGERS  —  GarmentGuard
--- Platform : Oracle Database XE 11g
--- Depends  : 03_tables.sql (schema), 07_packages.sql (all 4 packages)
--- =============================================================================
--- Contents
---   DDL   : GRIEVANCE_AUDIT_LOG table + sequence + auto-PK trigger
---   Triggers (6):
---     trg_audit_after_insert   — sync FACTORY dates + compliance on audit INSERT
---     trg_audit_score_status   — sync FACTORY compliance on audit score UPDATE
---     trg_salary_net_calc      — derive net_salary BEFORE INSERT/UPDATE
---     trg_cert_expiry_guard    — reject past-dated certifications on INSERT
---     trg_worker_count_sync    — maintain FACTORY.total_workers on hire/terminate
---     trg_grievance_audit_log  — trail every GRIEVANCE.status change
--- =============================================================================
-
 SET DEFINE OFF
 SET ECHO ON
 SET SERVEROUTPUT ON

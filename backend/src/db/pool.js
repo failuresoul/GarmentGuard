@@ -1,5 +1,8 @@
 const oracledb = require('oracledb');
 
+// Fetch CLOB data types directly as JavaScript strings
+oracledb.fetchAsString = [ oracledb.CLOB ];
+
 // Enable node-oracledb Thick mode to support Oracle 11g connections
 try {
   oracledb.initOracleClient();

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Outlet, NavLink, useLocation } from 'react-router-dom';
-import { Factory, Users, ClipboardCheck, AlertTriangle, ShieldCheck, X } from 'lucide-react';
+import { LayoutDashboard, Factory, BarChart3, Users, ClipboardCheck, AlertTriangle, ShieldCheck, X } from 'lucide-react';
 
 /**
  * Layout Component.
@@ -26,7 +26,9 @@ export function Layout() {
   }, []);
 
   const navItems = [
-    { name: 'Factories', to: '/', icon: Factory },
+    { name: 'Dashboard', to: '/', icon: LayoutDashboard },
+    { name: 'Factories', to: '/factories', icon: Factory },
+    { name: 'Analytics', to: '/analytics', icon: BarChart3 },
     { name: 'Workers', to: '/workers', icon: Users },
     { name: 'Safety Audits', to: '/audits', icon: ClipboardCheck },
     { name: 'Grievances', to: '/grievances', icon: AlertTriangle }
@@ -47,9 +49,8 @@ export function Layout() {
         {/* Navigation list */}
         <nav className="flex-1 px-4 py-6 space-y-1">
           {navItems.map((item) => {
-            // Keep 'Factories' active on /factories/:id child routes too
             const isActive = item.to === '/'
-              ? location.pathname === '/' || location.pathname.startsWith('/factories')
+              ? location.pathname === '/'
               : location.pathname.startsWith(item.to);
             return (
               <NavLink

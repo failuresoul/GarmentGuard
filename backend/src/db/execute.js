@@ -14,6 +14,14 @@ async function executeQuery(sql, params = {}, opts = {}) {
   try {
     connection = await oracledb.getConnection();
     
+    // Set Oracle client info context if clientId is passed (for row-level security)
+    if (opts.clientId !== undefined) {
+      await connection.execute(
+        `BEGIN DBMS_APPLICATION_INFO.SET_CLIENT_INFO(:id); END;`,
+        { id: String(opts.clientId) }
+      );
+    }
+    
     const executionOptions = {
       outFormat: oracledb.OUT_FORMAT_OBJECT,
       autoCommit: true, // Default to autocommit for simple DML/PLSQL execution

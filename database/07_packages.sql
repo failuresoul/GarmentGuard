@@ -1,38 +1,10 @@
--- =============================================================================
--- 07. PACKAGES  —  GarmentGuard
--- Platform : Oracle Database XE 11g
--- =============================================================================
--- Compilation order (respects cross-package dependencies):
---   1. pkg_error_handler  SPEC + BODY   (no external dependencies)
---   2. pkg_reporting      SPEC only      (constants referenced by factory/worker bodies)
---   3. pkg_factory_mgmt   SPEC
---   4. pkg_worker_mgmt    SPEC
---   5. pkg_factory_mgmt   BODY           (uses pkg_error_handler, pkg_reporting constants)
---   6. pkg_worker_mgmt    BODY           (uses pkg_error_handler, pkg_reporting.c_ot_cap)
---   7. pkg_reporting      BODY           (uses pkg_factory_mgmt, pkg_worker_mgmt)
--- =============================================================================
-
 SET DEFINE OFF
 SET ECHO ON
 SET SERVEROUTPUT ON
 
-
--- =============================================================================
--- 1.  pkg_error_handler  SPEC
--- =============================================================================
 PROMPT [1/7] pkg_error_handler spec...
 
 CREATE OR REPLACE PACKAGE pkg_error_handler AS
-  /**
-   * Persist a runtime error into ERROR_LOG.
-   * Executes in an AUTONOMOUS_TRANSACTION so the entry survives caller ROLLBACK.
-   *
-   * Parameters
-   *   p_proc_name  Fully-qualified PL/SQL unit name  (e.g. 'pkg_x.sp_y')
-   *   p_sqlcode    SQLCODE value captured at the exception site
-   *   p_sqlerrm    SQLERRM message captured at the exception site
-   *   p_stack      DBMS_UTILITY.FORMAT_ERROR_BACKTRACE (optional)
-   */
   PROCEDURE log_error(
     p_proc_name IN VARCHAR2,
     p_sqlcode   IN NUMBER,
@@ -42,10 +14,6 @@ CREATE OR REPLACE PACKAGE pkg_error_handler AS
 END pkg_error_handler;
 /
 
-
--- =============================================================================
--- 2.  pkg_error_handler  BODY
--- =============================================================================
 PROMPT [2/7] pkg_error_handler body...
 
 CREATE OR REPLACE PACKAGE BODY pkg_error_handler AS
