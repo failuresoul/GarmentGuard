@@ -168,6 +168,45 @@ EXCEPTION
 END;
 /
 
+PROMPT [11/11] Testing sp_schedule_audit and duplicate validation...
+DECLARE
+  v_count_before NUMBER;
+  v_count_after NUMBER;
+BEGIN
+  -- Schedule audit for Factory 1 in July 2026 (no audit exists yet in July 2026)
+  SELECT COUNT(*) INTO v_count_before FROM "AUDIT" WHERE factory_id = 1;
+
+  pkg_factory_mgmt.sp_schedule_audit(
+    p_factory_id   => 1,
+    p_inspector_id => 4,
+    p_audit_date   => TO_DATE('2026-07-15', 'YYYY-MM-DD')
+  );
+
+  SELECT COUNT(*) INTO v_count_after FROM "AUDIT" WHERE factory_id = 1;
+
+  -- Try scheduling another audit for same factory in same month (July 2026) -> Should throw -20004
+  BEGIN
+    pkg_factory_mgmt.sp_schedule_audit(
+      p_factory_id   => 1,
+      p_inspector_id => 4,
+      p_audit_date   => TO_DATE('2026-07-20', 'YYYY-MM-DD')
+    );
+    DBMS_OUTPUT.PUT_LINE('BLOCK 11 FAIL: Allowed duplicate scheduling in same month');
+  EXCEPTION
+    WHEN OTHERS THEN
+      IF SQLCODE = -20004 THEN
+        DBMS_OUTPUT.PUT_LINE('BLOCK 11 PASS: sp_schedule_audit scheduled successfully and blocked duplicate with -20004');
+      ELSE
+        DBMS_OUTPUT.PUT_LINE('BLOCK 11 FAIL: sp_schedule_audit raised unexpected error: ' || SQLERRM);
+      END IF;
+  END;
+
+  -- Cleanup
+  DELETE FROM "AUDIT" WHERE factory_id = 1 AND audit_date = TO_DATE('2026-07-15', 'YYYY-MM-DD');
+  COMMIT;
+END;
+/
+
 PROMPT =========================================================================
 PROMPT  INTEGRITY RUN COMPLETED
 PROMPT =========================================================================

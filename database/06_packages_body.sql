@@ -107,6 +107,38 @@ CREATE OR REPLACE PACKAGE BODY pkg_factory_mgmt AS
       RAISE;
   END sp_register_factory;
 
+  -- sp_schedule_audit
+  PROCEDURE sp_schedule_audit(
+    p_factory_id   IN NUMBER,
+    p_inspector_id IN NUMBER,
+    p_audit_date   IN DATE
+  ) IS
+    v_count NUMBER;
+    v_proc  VARCHAR2(100) := 'pkg_factory_mgmt.sp_schedule_audit';
+  BEGIN
+    -- Check for duplicate audit in same month
+    SELECT COUNT(*) INTO v_count
+    FROM "AUDIT"
+    WHERE factory_id = p_factory_id
+      AND EXTRACT(MONTH FROM audit_date) = EXTRACT(MONTH FROM p_audit_date)
+      AND EXTRACT(YEAR FROM audit_date) = EXTRACT(YEAR FROM p_audit_date);
+
+    IF v_count > 0 THEN
+      RAISE_APPLICATION_ERROR(-20004, 'An audit is already scheduled or recorded for this factory in this month.');
+    END IF;
+
+    INSERT INTO "AUDIT" (
+      factory_id, inspector_id, audit_date, result, score, findings, recommendations
+    ) VALUES (
+      p_factory_id, p_inspector_id, p_audit_date, 'Pending', NULL, NULL, NULL
+    );
+  EXCEPTION
+    WHEN OTHERS THEN
+      pkg_error_handler.log_error(v_proc, SQLCODE, SQLERRM,
+        DBMS_UTILITY.FORMAT_ERROR_BACKTRACE);
+      RAISE;
+  END sp_schedule_audit;
+
   -- sp_update_compliance_status
   PROCEDURE sp_update_compliance_status(p_factory_id IN NUMBER) IS
     v_proc   VARCHAR2(100) := 'pkg_factory_mgmt.sp_update_compliance_status';

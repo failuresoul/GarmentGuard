@@ -49,6 +49,12 @@ CREATE OR REPLACE PACKAGE pkg_factory_mgmt AS
 
   PROCEDURE sp_update_compliance_status(p_factory_id IN NUMBER);
 
+  PROCEDURE sp_schedule_audit(
+    p_factory_id   IN NUMBER,
+    p_inspector_id IN NUMBER,
+    p_audit_date   IN DATE
+  );
+
   FUNCTION fn_compliance_score(p_factory_id IN NUMBER) RETURN NUMBER
     RESULT_CACHE;
 

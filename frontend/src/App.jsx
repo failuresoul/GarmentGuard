@@ -11,6 +11,7 @@ import Analytics from './pages/Analytics';
 import LoginPage from './pages/LoginPage';
 import BuyerDashboard from './pages/BuyerDashboard';
 import WorkerPortal from './pages/WorkerPortal';
+import SafetyAudits from './pages/SafetyAudits';
 import ProtectedRoute from './components/ProtectedRoute';
 import { AuthProvider } from './hooks/useAuth';
 
@@ -93,21 +94,8 @@ export function App() {
               <Route path="analytics" element={<Analytics />} />
               <Route path="workers" element={<WorkersDashboard />} />
               
-              {/* Audits coming soon skeleton */}
-              <Route 
-                path="audits" 
-                element={
-                  <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm animate-fadeIn">
-                    <h2 className="text-xl font-bold text-gray-900">Safety Audits Management</h2>
-                    <p className="text-gray-500 text-sm mt-1">
-                      Schedule and record safety reviews, fire safety equipment, and structural tests.
-                    </p>
-                    <div className="mt-6 border-2 border-dashed border-gray-200 rounded-xl h-64 flex items-center justify-center text-gray-400 text-sm font-medium">
-                      Audits Registry and Assessment System Coming Soon
-                    </div>
-                  </div>
-                } 
-              />
+              {/* Safety Audits Management */}
+              <Route path="audits" element={<SafetyAudits />} />
 
               {/* Grievance Kanban Board */}
               <Route path="grievances" element={<GrievanceBoard />} />
