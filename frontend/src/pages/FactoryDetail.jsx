@@ -230,7 +230,7 @@ function OverviewTab({ factory, alerts }) {
   return (
     <div className="space-y-5">
       {/* Stat cards */}
-      <div className="grid grid-cols-2 xl:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
         <StatCard icon={Users}         label="Total Workers"   value={factory.totalWorkers?.toLocaleString()} color="blue" />
         <StatCard icon={AlertTriangle} label="Open Grievances" value={factory.openGrievancesCount}
           color={factory.openGrievancesCount > 0 ? 'red' : 'emerald'}

@@ -122,7 +122,7 @@ export default function Dashboard() {
   return (
     <div className="space-y-8 animate-fadeIn">
       {/* ── TOP METRIC ROW ────────────────────────────────────────────────── */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
         
         {/* Metric 1: Total Factories */}
         <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow flex items-center justify-between">
@@ -187,7 +187,7 @@ export default function Dashboard() {
       </div>
 
       {/* ── CHARTS SECTION ───────────────────────────────────────────────── */}
-      <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 md:gap-6">
         
         {/* Compliance Distribution (2/5 size) */}
         <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm lg:col-span-2 flex flex-col justify-between">
@@ -275,10 +275,10 @@ export default function Dashboard() {
       </div>
 
       {/* ── LOWER DETAIL ROW ──────────────────────────────────────────────── */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
         
         {/* District rankings table (2/3 size) */}
-        <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm lg:col-span-2 flex flex-col justify-between">
+        <div className="bg-white p-4 md:p-6 rounded-2xl border border-gray-100 shadow-sm lg:col-span-2 flex flex-col">
           <div>
             <h3 className="font-bold text-gray-800 text-base">District Compliance Rankings</h3>
             <p className="text-xs text-gray-400 mt-1">Factories evaluated and ranked within their geographical districts (Query 1)</p>
@@ -301,7 +301,7 @@ export default function Dashboard() {
                   </th>
                   <th 
                     onClick={() => handleSort('district')}
-                    className="pb-3 cursor-pointer hover:text-emerald-600 transition-colors"
+                    className="pb-3 cursor-pointer hover:text-emerald-600 transition-colors hidden sm:table-cell"
                   >
                     District <SortIndicator field="district" />
                   </th>
@@ -314,29 +314,37 @@ export default function Dashboard() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-50 text-gray-700">
-                {sortedRankings.map((row) => (
-                  <tr key={row.factoryId} className="hover:bg-slate-50/50 transition-colors group">
-                    <td className="py-3 font-semibold text-emerald-600">
-                      #{row.complianceRank}
-                    </td>
-                    <td className="py-3 font-medium group-hover:text-emerald-700 transition-colors">
-                      <Link to={`/factories/${row.factoryId}`} className="hover:underline">
-                        {row.factoryName}
-                      </Link>
-                    </td>
-                    <td className="py-3 text-gray-500">
-                      {row.district}
-                    </td>
-                    <td className="py-3 font-bold">
-                      <span className={`px-2.5 py-0.5 rounded-full text-xs ${
-                        row.complianceScore >= 75 ? 'bg-emerald-50 text-emerald-700' :
-                        row.complianceScore >= 50 ? 'bg-amber-50 text-amber-700' : 'bg-red-50 text-red-700'
-                      }`}>
-                        {row.complianceScore.toFixed(1)}
-                      </span>
+                {sortedRankings.length > 0 ? (
+                  sortedRankings.map((row) => (
+                    <tr key={row.factoryId} className="hover:bg-slate-50/50 transition-colors group">
+                      <td className="py-3 font-semibold text-emerald-600">
+                        #{row.complianceRank}
+                      </td>
+                      <td className="py-3 font-medium group-hover:text-emerald-700 transition-colors">
+                        <Link to={`/factories/${row.factoryId}`} className="hover:underline">
+                          {row.factoryName}
+                        </Link>
+                      </td>
+                      <td className="py-3 text-gray-500 hidden sm:table-cell">
+                        {row.district}
+                      </td>
+                      <td className="py-3 font-bold">
+                        <span className={`px-2.5 py-0.5 rounded-full text-xs ${
+                          row.complianceScore >= 75 ? 'bg-emerald-50 text-emerald-700' :
+                          row.complianceScore >= 50 ? 'bg-amber-50 text-amber-700' : 'bg-red-50 text-red-700'
+                        }`}>
+                          {(row.complianceScore ?? 0).toFixed(1)}
+                        </span>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan={4} className="py-8 text-center text-gray-400 text-sm">
+                      No district compliance data available
                     </td>
                   </tr>
-                ))}
+                )}
               </tbody>
             </table>
           </div>
