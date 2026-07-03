@@ -284,7 +284,7 @@ export default function Dashboard() {
             <p className="text-xs text-gray-400 mt-1">Factories evaluated and ranked within their geographical districts (Query 1)</p>
           </div>
           <div className="overflow-x-auto mt-4">
-            <table className="w-full text-left text-sm border-collapse">
+            <table className="w-full min-w-[500px] text-left text-sm border-collapse">
               <thead>
                 <tr className="border-b border-gray-100 text-gray-400 font-semibold text-xs">
                   <th 

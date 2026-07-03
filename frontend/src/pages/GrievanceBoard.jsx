@@ -268,7 +268,7 @@ export default function GrievanceBoard() {
       </div>
 
       {/* Kanban Board Container */}
-      <div className={`grid grid-cols-1 ${visibleColumns.length === 1 ? 'md:grid-cols-1 max-w-2xl mx-auto' : 'md:grid-cols-3'} gap-6`}>
+      <div className={`grid grid-cols-1 ${visibleColumns.length === 1 ? 'md:grid-cols-1 max-w-2xl mx-auto' : 'sm:grid-cols-2 lg:grid-cols-3'} gap-6`}>
         {visibleColumns.map(col => {
           const colGrievances = filteredGrievances.filter(g => g.status === col.id);
           return (

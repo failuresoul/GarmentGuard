@@ -371,7 +371,7 @@ function WorkersTab({ factoryId }) {
 
       <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm">
         <div className="overflow-x-auto">
-          <table className="min-w-full text-sm">
+          <table className="w-full min-w-[800px] text-sm">
             <thead>
               <tr className="bg-gray-50 border-b border-gray-100">
                 {headers.map(h => {
@@ -762,7 +762,7 @@ export function FactoryDetail() {
       <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
 
         {/* Dark hero band — NO overflow-hidden so SVG overflow-visible works */}
-        <div className="relative bg-gradient-to-br from-slate-900 via-slate-800 to-slate-700 px-8 py-8">
+        <div className="relative bg-gradient-to-br from-slate-900 via-slate-800 to-slate-700 px-4 sm:px-8 py-6 md:py-8">
           {/* Background decoration */}
           <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/5 rounded-full -translate-y-1/2 translate-x-1/3 pointer-events-none"/>
           <div className="absolute bottom-0 left-1/3 w-48 h-48 bg-white/3 rounded-full translate-y-1/2 pointer-events-none"/>

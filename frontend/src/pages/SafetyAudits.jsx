@@ -300,7 +300,7 @@ export default function SafetyAudits() {
               <span>No audits matching the criteria were found.</span>
             </div>
           ) : (
-            <table className="w-full text-left border-collapse">
+            <table className="w-full min-w-[800px] text-left border-collapse">
               <thead>
                 <tr className="bg-gray-50/50 border-b border-gray-100 text-xs font-bold uppercase tracking-wider text-gray-500">
                   <th className="px-6 py-4">Audit ID</th>

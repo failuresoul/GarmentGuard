@@ -79,7 +79,7 @@ export default function BuyerDashboard() {
       <div className="absolute top-0 left-1/4 w-96 h-96 bg-emerald-500/5 rounded-full blur-3xl -translate-y-1/2"></div>
 
       {/* Header Banner */}
-      <header className="border-b border-slate-900 bg-slate-950/80 backdrop-blur-md sticky top-0 z-20 px-8 py-4 flex items-center justify-between shrink-0">
+      <header className="border-b border-slate-900 bg-slate-950/80 backdrop-blur-md sticky top-0 z-20 px-4 sm:px-8 py-4 flex items-center justify-between shrink-0">
         <div className="flex items-center gap-3">
           <ShieldCheck className="w-8 h-8 text-emerald-500" />
           <div>
@@ -105,7 +105,7 @@ export default function BuyerDashboard() {
       </header>
 
       {/* Main Sourcing Area */}
-      <main className="flex-1 p-8 overflow-auto max-w-7xl mx-auto w-full space-y-8 z-10">
+      <main className="flex-1 p-4 sm:p-8 overflow-auto max-w-7xl mx-auto w-full space-y-8 z-10">
         
         {/* Brand Hero Banner */}
         <div className="bg-gradient-to-r from-slate-900 via-slate-900 to-slate-950 border border-slate-800/80 rounded-2xl p-6 sm:p-8 shadow-xl flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
@@ -226,7 +226,7 @@ export default function BuyerDashboard() {
       {selectedFactory && (
         <div className="fixed inset-0 z-50 overflow-hidden flex items-center justify-end bg-black/60 backdrop-blur-sm animate-fadeIn">
           
-          <div className="w-full max-w-md h-full bg-slate-900 border-l border-slate-800/80 shadow-2xl p-8 flex flex-col justify-between overflow-y-auto">
+          <div className="w-full max-w-md h-full bg-slate-900 border-l border-slate-800/80 shadow-2xl p-4 sm:p-8 flex flex-col justify-between overflow-y-auto">
             
             <div className="space-y-6">
               {/* Header */}

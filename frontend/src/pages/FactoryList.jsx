@@ -193,7 +193,7 @@ export function FactoryList() {
       {!error && (
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
           <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200 text-left text-sm">
+            <table className="w-full min-w-[950px] divide-y divide-gray-200 text-left text-sm">
               <thead className="bg-gray-50 text-xs text-gray-500 uppercase tracking-wider">
                 <tr>
                   <th className="px-6 py-3 font-semibold">Factory Name</th>
@@ -298,7 +298,7 @@ export function FactoryList() {
             className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity duration-300"
           ></div>
 
-          <div className="absolute inset-y-0 right-0 max-w-full flex pl-10">
+          <div className="absolute inset-y-0 right-0 max-w-full flex pl-4 sm:pl-10">
             {/* Panel */}
             <div className="w-screen max-w-md bg-white shadow-2xl flex flex-col h-full transform transition-transform duration-300">
               {/* Slide-over header */}

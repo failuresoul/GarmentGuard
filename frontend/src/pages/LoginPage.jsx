@@ -43,7 +43,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative overflow-hidden">
+    <div className="min-h-screen bg-slate-950 flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
       
       {/* Visual background accents */}
       <div className="absolute top-0 left-0 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"></div>
@@ -132,7 +132,7 @@ export default function LoginPage() {
           {/* Quick Info */}
           <div className="mt-6 border-t border-slate-800/80 pt-5 text-center">
             <span className="text-slate-500 text-xs font-semibold uppercase tracking-wider block mb-2">Seed Accounts Info</span>
-            <div className="grid grid-cols-2 gap-2 text-[10px] text-slate-400">
+            <div className="grid grid-cols-1 min-[360px]:grid-cols-2 gap-2 text-[10px] text-slate-400">
               <div className="bg-slate-950/50 p-2 border border-slate-800/50 rounded-lg">
                 <span className="text-emerald-400 font-bold">sysadmin</span> / password123
               </div>

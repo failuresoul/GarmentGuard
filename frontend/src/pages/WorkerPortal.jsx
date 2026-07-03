@@ -103,7 +103,7 @@ export default function WorkerPortal() {
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
       {/* Header */}
-      <header className="bg-slate-900 text-white px-8 py-4 flex items-center justify-between shadow-md shrink-0">
+      <header className="bg-slate-900 text-white px-4 sm:px-8 py-4 flex items-center justify-between shadow-md shrink-0">
         <div className="flex items-center gap-3">
           <ShieldCheck className="w-8 h-8 text-emerald-500" />
           <div>
@@ -127,7 +127,7 @@ export default function WorkerPortal() {
       </header>
 
       {/* Main Content */}
-      <main className="flex-1 p-6 max-w-5xl mx-auto w-full space-y-6">
+      <main className="flex-1 p-4 sm:p-6 max-w-5xl mx-auto w-full space-y-6">
         
         {/* Banner */}
         <div className="bg-gradient-to-br from-emerald-800 to-emerald-600 rounded-2xl p-6 shadow-sm text-white flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
